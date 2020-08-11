@@ -4,7 +4,15 @@
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 20px;
 }
 .inputCheckbox {
     height: 50px;
+}
+.isComplate {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+.item {
+    width: 70%;
 }

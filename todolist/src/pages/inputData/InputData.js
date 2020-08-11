@@ -4,7 +4,6 @@ import './index.css';
 class InputData extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             contentInput:'',
         }
@@ -15,15 +14,15 @@ class InputData extends Component {
     }
     handleKeyDown = event => {
         if(event.key === 'Enter') {
-            this.state.listItems.push(this.state.contentInput);
-            console.log(this.state.listItems)
+            this.props.addItem(this.state.contentInput);
         }
     }
     render() {
+
         return(
             <header className={'header'}>
                 <h1>todos</h1>
-
+                {/* <App test={'test'} />*/}
                 <div className={'newInputData'}>
                     <button className={'complateAll'}>complate all</button>
                     <input
