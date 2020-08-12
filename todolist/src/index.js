@@ -5,8 +5,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
 
 let render = ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <App />
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById('root')
 );

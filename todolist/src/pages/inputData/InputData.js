@@ -17,14 +17,15 @@ class InputData extends Component {
             this.props.addItem(this.state.contentInput);
         }
     }
-    render() {
 
+    render() {
+        const {handleClickComplateAll} = this.props;
         return(
             <header className={'header'}>
                 <h1>todos</h1>
                 {/* <App test={'test'} />*/}
                 <div className={'newInputData'}>
-                    <button className={'complateAll'}>complate all</button>
+                    <button className={'complateAll'} onClick={handleClickComplateAll}>complate all</button>
                     <input
                         className={'newTodo'}
                         type="text"

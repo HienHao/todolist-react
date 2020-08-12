@@ -8,13 +8,23 @@ class App extends Component{
         this.state = {
             listItems: [
                 {title: 'Ăn cơm', isComplate: false},
-                {title: 'Ăn cơm', isComplate: false},
-                {title: 'Ăn cơm', isComplate: false},
-                {title: 'Ăn cơm', isComplate: false},
-                {title: 'Ăn cơm', isComplate: false},
-                {title: 'Ăn cơm', isComplate: false}
+                {title: 'Ăn cá', isComplate: false},
+                {title: 'Ăn canh', isComplate: false},
+                {title: 'uống nước', isComplate: false},
+                {title: 'giặt', isComplate: false},
+                {title: 'tắm', isComplate: false},
+                {title: 'Nấu cơm', isComplate: false},
+                {title: 'đi làm', isComplate: false},
+                {title: 'deadline', isComplate: false},
+                {title: 'ngồi', isComplate: false},
+                {title: 'nghỉ ngơi', isComplate: false},
+                {title: 'Ăn cơm trưa', isComplate: false},
+                {title: 'Ăn sáng', isComplate: false},
+                {title: 'Ăn tối', isComplate: false},
+                {title: 'đi học', isComplate: false}
             ],
-            selected: 'all'
+            selected: 'all',
+            pageNumberState: 1
         }
     }
 
@@ -25,38 +35,69 @@ class App extends Component{
     }
 
     handleClickCheckboxItem = (item, index) => {
+        debugger
         const {listItems} = this.state;
+        debugger
         listItems[index].isComplate = !listItems[index].isComplate;
+        debugger
         this.setState({listItems});
+        console.log('item: ', item, 'index: ', index);
+        debugger
     }
 
     handleClickedButtonDeleteItem = (item, index) => {
+        debugger
         const {listItems} = this.state;
         listItems.splice(index, 1);
-        this.setState({listItems});
+        return this.setState({listItems});
+        debugger;
     }
 
     handleClicked = (selected) => {
         this.setState({selected: selected})
     }
+
     handleClearComplate = () => {
         const {listItems} = this.state;
         const newListItems = listItems.filter( item => item.isComplate === false);
         this.setState({listItems: newListItems})
     }
 
+    handlePagination = (pageNumber) => {
+        let {pageNumberState, listItems} = this.state;
+        let limitPage = ~~(listItems.length / 4);
+        if(pageNumberState >= 1 && pageNumberState <= limitPage) {
+            if(pageNumber === 0 && pageNumberState < limitPage) {
+                pageNumberState = pageNumberState + 1;
+                this.setState({pageNumberState});
+            }
+            if(pageNumber === -1 && pageNumberState > 1) {
+                pageNumberState = pageNumberState - 1;
+                this.setState({pageNumberState});
+            }
+        }
+    }
+
+    handleClickComplateAll = () => {
+        const {listItems} = this.state;
+        listItems.map(element => element.isComplate = true);
+        this.setState({listItems});
+    }
+
     render() {
-        const {listItems, selected} = this.state;
+        const {listItems, selected, pageNumberState} = this.state;
+        let startElements = (pageNumberState-1)*5, endElements = startElements + 5;
+        let limitPage = ~~(listItems.length / 4);
         return (
             <div className="App">
-                <Header addItem={this.handleAddItem} />
+                <Header addItem={this.handleAddItem} handleClickComplateAll={this.handleClickComplateAll}/>
                 {
-                    listItems.map((item, index) => {
+                    listItems.map( (item, index) => {
                         let flag = false;
                         if(selected === 'active' && !item.isComplate) flag = true;
                         if(selected === 'complate' && item.isComplate) flag = true;
                         if(selected === 'all') flag = true;
-                        if(flag) {
+                        if(flag && endElements > index && startElements <= index) {
                             return (<Item item={item}
                                           key={index}
                                           onItemClickedCheckbox={this.handleClickCheckboxItem}
@@ -68,6 +109,10 @@ class App extends Component{
                 }
               <Footer handleClicked={this.handleClicked}
                       handleClearComplate={this.handleClearComplate}
+                      handlePagination = {this.handlePagination}
+                      pageNumber = {pageNumberState}
+                      limitPage = {limitPage}
+
               />
             </div>
         );
