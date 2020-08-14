@@ -16,18 +16,18 @@ export default class Item extends Component {
         return(
             <div className= {`item-${index} ${isComplate ? 'isComplate':''} itemTodo`} >
               <div className={'row'}>
-                  <div className="col-md-4 bg-primary">
+                  <div className="col-md-4">
                       <input type="checkbox"
                              className={'inputCheckbox'}
                              checked={checkedItem}
                              onClick={this.clickedCheckbox}
                       />
                   </div>
-                  <div className="col-md-4 bg-success">
+                  <div className="col-md-4">
                       <p>{title}</p>
                   </div>
-                  <div className="col-md-4 bg-success">
-                      <button onClick={this.clickedButtonDeleteItem}>Xóa</button>
+                  <div className="col-md-4">
+                      <button onClick={this.clickedButtonDeleteItem} className={'btn btn-outline-danger'}>Delete</button>
                   </div>
               </div>
           </div>

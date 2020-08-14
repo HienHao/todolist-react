@@ -89,7 +89,7 @@ class App extends Component{
         let startElements = (pageNumberState-1)*5, endElements = startElements + 5;
         let limitPage = ~~(listItems.length / 4);
         return (
-            <div className="App">
+            <div className="App"  style={{width: '800px', margin: 'auto'}}>
                 <Header addItem={this.handleAddItem} handleClickComplateAll={this.handleClickComplateAll}/>
                 {
                     listItems.map( (item, index) => {
