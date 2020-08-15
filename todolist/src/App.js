@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import Header from '../src/pages/inputData/InputData';
 import Item from '../src/components/toDo/index';
 import Footer from "./pages/footer";
+
+
 class App extends Component{
     constructor(props) {
         super(props);
@@ -35,26 +39,19 @@ class App extends Component{
     }
 
     handleClickCheckboxItem = (item, index) => {
-        debugger
         const {listItems} = this.state;
-        debugger
         listItems[index].isComplate = !listItems[index].isComplate;
-        debugger
-        this.setState({listItems});
-        console.log('item: ', item, 'index: ', index);
-        debugger
+        this.setState({listItems}); // property shorthand
     }
 
     handleClickedButtonDeleteItem = (item, index) => {
-        debugger
         const {listItems} = this.state;
         listItems.splice(index, 1);
         return this.setState({listItems});
-        debugger;
     }
 
     handleClicked = (selected) => {
-        this.setState({selected: selected})
+        this.setState({selected})
     }
 
     handleClearComplate = () => {
@@ -86,13 +83,13 @@ class App extends Component{
 
     render() {
         const {listItems, selected, pageNumberState} = this.state;
-        let startElements = (pageNumberState-1)*5, endElements = startElements + 5;
+        let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
         let limitPage = ~~(listItems.length / 4);
         return (
             <div className="App"  style={{width: '800px', margin: 'auto'}}>
                 <Header addItem={this.handleAddItem} handleClickComplateAll={this.handleClickComplateAll}/>
                 {
-                    listItems.map( (item, index) => {
+                    listItems && listItems.map((item, index) => {
                         let flag = false;
                         if(selected === 'active' && !item.isComplate) flag = true;
                         if(selected === 'complate' && item.isComplate) flag = true;
@@ -116,7 +113,15 @@ class App extends Component{
               />
             </div>
         );
-  }
+    }
 }
+
+// App.propTypes = {
+//     listItems: PropTypes.array,
+// }
+//
+// App.defaultProps = {
+//     listItems: [],
+// }
 
 export default App;

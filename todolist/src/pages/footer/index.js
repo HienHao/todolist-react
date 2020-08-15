@@ -5,7 +5,7 @@ export default class Footer extends Component {
     render() {
         const { handleClicked, handleClearComplate, handlePagination, pageNumber, limitPage } = this.props;
         return(
-            <div className={'footer'} style={{display: 'flex'}}>
+            <div className={'footer'} style={{display: 'flex', justifyContent: 'space-between'}}>
                 <div className={'button'}>
                     <button className={'btn btn-outline-primary'} onClick={() => handleClicked('all')}>All</button>
                     <button className={'btn btn-outline-success'} onClick={ () => handleClicked('active')}>Active</button>

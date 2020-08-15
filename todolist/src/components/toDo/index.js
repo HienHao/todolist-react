@@ -3,8 +3,9 @@ import './index.css';
 export default class Item extends Component {
     constructor(props) {
         super(props);
+        this.clickedCheckbox = this.clickedCheckbox.bind(this);
     }
-    clickedCheckbox = () => {
+    clickedCheckbox() {
         this.props.onItemClickedCheckbox(this.props.item, this.props.index);
     }
     clickedButtonDeleteItem = () => {
@@ -13,15 +14,21 @@ export default class Item extends Component {
     render() {
         const { isComplate, title, index} = this.props.item;
         const checkedItem = isComplate ? true : false;
+        let test = <input type="checkbox"
+                          className={'inputCheckbox'}
+                          checked={checkedItem}
+                          onClick={this.clickedCheckbox}
+        />;
         return(
             <div className= {`item-${index} ${isComplate ? 'isComplate':''} itemTodo`} >
               <div className={'row'}>
                   <div className="col-md-4">
-                      <input type="checkbox"
-                             className={'inputCheckbox'}
-                             checked={checkedItem}
-                             onClick={this.clickedCheckbox}
-                      />
+                      {/*<input type="checkbox"*/}
+                      {/*       className={'inputCheckbox'}*/}
+                      {/*       checked={checkedItem}*/}
+                      {/*       onClick={this.clickedCheckbox}*/}
+                      {/*/>*/}
+                      {test}
                   </div>
                   <div className="col-md-4">
                       <p>{title}</p>
