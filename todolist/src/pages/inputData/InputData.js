@@ -4,28 +4,49 @@ import './index.css';
 class InputData extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             contentInput:'',
+            contentInputSearch:''
         }
     }
 
     handleInput = event => {
-        this.setState( {contentInput: event.target.value});
+        const {value} = event.target;
+        this.setState( {contentInput: value});
+        this.props.handleChangeText(value);
     }
+
     handleKeyDown = event => {
+        const {contentInput} = this.state;
         if(event.key === 'Enter') {
-            this.props.addItem(this.state.contentInput);
+            this.props.addItem(contentInput);
         }
     }
 
+    handleSaveTextInputSearch = (event) => {
+        const {value} = event.target;
+        this.setState( {contentInputSearch: value});
+        this.props.handleSaveTextInputSearch(value);
+        this.props.handleSearch(value);
+    }
+
+
     render() {
         const {handleClickComplateAll} = this.props;
+        // console.log('Render: ', this.state.contentInputSearch);
         return(
-            <header className={'header'}>
+            <header className={'header'} >
                 <h1>todos</h1>
                 {/* <App test={'test'} />*/}
-                <div className={'newInputData'}>
-                    <button className={'complateAll'} onClick={handleClickComplateAll}>complate all</button>
+                <div className={'newInputData'} style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <button className={'complateAll'} onClick={handleClickComplateAll}>complete all</button>
+                    <input className={'filter-todos'}
+                           type={'text'} style={{width: '200px', fontSize: '30px'}}
+                           placeholder={'Search here...'}
+                           value={this.state.contentInputSearch}
+                           onChange={this.handleSaveTextInputSearch}
+                    />
                     <input
                         className={'newTodo'}
                         type="text"

@@ -12,10 +12,6 @@ input {
     /*padding: 10px;*/
     font-size: 2em;
 }
-
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: pink;
-}
 .newTodo {
     width: 500px;
     height: 65px;
@@ -31,4 +27,8 @@ input {
     display: inline-block;
     border-radius: 4px;
     cursor: pointer;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: pink;
 }
