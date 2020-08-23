@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
-
-import ChildTodo from "../../pages/inputData/childTodo";
-
 import './index.css';
-
 export default class Item extends Component {
     constructor(props) {
         super(props);
@@ -18,6 +14,11 @@ export default class Item extends Component {
         this.props.onItemClickedButtonDelete(item, index, indexParent);
     }
 
+    // redux
+    handleDeleteTodo = () => {
+        const {handleDeleteTodo} = this.props;
+        handleDeleteTodo();
+    }
     render() {
         const { item, index, onClickButtonAddChild } = this.props;
         const checkedItem = item.isComplete ? true : false;
@@ -43,9 +44,10 @@ export default class Item extends Component {
                               >Add child</button>
                           }
                           <button
-                              onClick={this.clickedButtonDeleteItem}
-                              className={'btn btn-outline-danger'}
-                              style={{marginLeft: '5px'}}
+                            //   onClick={this.clickedButtonDeleteItem}
+                                onClick={this.handleDeleteTodo}
+                                className={'btn btn-outline-danger'}
+                                style={{marginLeft: '5px'}}
                           >Delete</button>
                       </div>
               </div>

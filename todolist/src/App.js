@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as TodoAction from './redux/actions/TodoAction';
 
 import Header from '../src/pages/inputData/InputData';
 import Item from '../src/components/toDo/index';
 import Footer from "./pages/footer";
-
 
 class App extends Component{
     constructor(props) {
@@ -161,11 +164,21 @@ class App extends Component{
         }
         this.setState({listItems});
     }
+    // redux
+    handleAddTodo = (text) => {
+        const {TodoActions: {addTodo}} = this.props;
+        addTodo(text);
+    }
 
     render() {
-        const {listItems, copyListItems, selected, searchTextContent, pageNumberState} = this.state;
+        // listItems
+        const {TodoItems: {listItems}, TodoActions: {deleteTodo}} = this.props;
+        const {copyListItems, selected, searchTextContent, pageNumberState} = this.state;
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
+        if(!listItems) return;
         let limitPage = ~~(listItems.length / 4);
+        console.log('Props from app: ',this.props);
+        
         return (
             <div className="App" style={{width: '900px', margin: 'auto'}}>
                 <Header
@@ -174,6 +187,7 @@ class App extends Component{
                     handleChangeText ={this.handleChangeText}
                     handleSaveTextInputSearch = {this.handleSaveTextInputSearch}
                     handleSearch = {this.handleSearch}
+                    handleAddTodo = {this.handleAddTodo}
                 />
                 {
                     !searchTextContent ? (listItems && listItems.map((item, index) => {
@@ -190,6 +204,7 @@ class App extends Component{
                                           index={index}
                                           onItemClickedButtonDelete={this.handleClickedButtonDeleteItem}
                                           onClickButtonAddChild={this.handleClickButtonAddChild}
+                                          handleDeleteTodo = {() => { deleteTodo(item.id)} }
                                     />
                                     <div style={{marginLeft: '60px'}}>
                                         {item.children && item.children.map( (element, indexChild) => {
@@ -199,6 +214,7 @@ class App extends Component{
                                                           index={indexChild}
                                                           indexParent ={index}
                                                           onItemClickedButtonDelete={this.handleClickedButtonDeleteItem}
+                                                          handleDeleteTodo = {() => { deleteTodo(item.id ,item.children[indexChild].id)} }
                                             />)
                                         } )}
                                     </div>
@@ -250,12 +266,16 @@ class App extends Component{
     }
 }
 
-// App.propTypes = {
-//     listItems: PropTypes.array,
-// }
-//
-// App.defaultProps = {
-//     listItems: [],
-// }
+function mapStateToProps(state) {
+    return {
+        TodoItems: state.TodoReducer
+    }
+}
 
-export default App;
+function mapDispatchToProps(dispatch) {
+    return {
+        TodoActions: bindActionCreators(TodoAction, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -21,6 +21,7 @@ class InputData extends Component {
         const {contentInput} = this.state;
         if(event.key === 'Enter') {
             this.props.addItem(contentInput);
+            this.props.handleAddTodo(contentInput);
         }
     }
 
