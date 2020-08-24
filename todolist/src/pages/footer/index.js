@@ -7,9 +7,10 @@ export default class Footer extends Component {
     }
     handleChange = (event) => {
         this.props.handleSort(event.target.value);
+        
     }
     render() {
-        const { handleClicked, handleClearComplate, handlePagination, pageNumber, limitPage, handleFilter } = this.props;
+        const { handleClicked, handleClearComplate, handlePagination, pageNumber, limitPage, handleFilter, hanldeClearComplete } = this.props;
 
         return(
             <div className={'footer'} style={{display: 'flex', justifyContent: 'space-between'}}>
@@ -17,7 +18,10 @@ export default class Footer extends Component {
                     <button className={'btn btn-outline-primary'} onClick={() => handleClicked('all')}>All</button>
                     <button className={'btn btn-outline-success'} onClick={ () => handleClicked('active')}>Active</button>
                     <button className={'btn btn-outline-danger'} onClick={() => handleClicked('complate')}>Complated</button>
-                    <button className={'btn btn-outline-secondary'} onClick={handleClearComplate}>Clear Complate</button>
+                    <button className={'btn btn-outline-secondary'} 
+                        // onClick={handleClearComplate}
+                        onClick={() => hanldeClearComplete()}
+                    >Clear Complate</button>
                 </div>
                 <div className={'drop-filter'} style={{marginTop: '10px'}}>
                     Sort with: <select onChange={this.handleChange}>

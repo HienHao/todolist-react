@@ -8,43 +8,18 @@ import * as TodoAction from './redux/actions/TodoAction';
 import Header from '../src/pages/inputData/InputData';
 import Item from '../src/components/toDo/index';
 import Footer from "./pages/footer";
+import TodosSection from './pages/TodosSection/TodosSection';
 
 class App extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            listItems: [
-                {
-                    title: 'Ăn cơm',
-                    isComplete: false,
-                    children: [
-                        {title: 'Ăn cháo', isComplete: false, isChildren: true},
-                        {title: 'Ăn cá', isComplete: false, isChildren: true},
-                        {title: 'Ăn tôm', isComplete: false, isChildren: true},
-                    ],
-                    isHaveChildren: true,
-                },
-                {title: 'Ăn cá', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'Ăn canh', isComplete: false, children: [], isHaveChildren: false },
-                {title: 'uống nước', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'giặt', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'tắm', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'Nấu cơm', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'đi làm', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'deadline', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'ngồi', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'nghỉ ngơi', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'Ăn cơm trưa', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'Ăn sáng', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'Ăn tối', isComplete: false, children: [], isHaveChildren: false},
-                {title: 'đi học', isComplete: false, children: [], isHaveChildren: false}
-            ],
             copyListItems: [],
             selected: 'all',
             textContent: '',
             searchTextContent: '',
             pageNumberState: 1,
-            selectFiltersOption: 0
+            enableSort: false
         }
     }
 
@@ -54,36 +29,8 @@ class App extends Component{
         this.setState({listItems});
     }
 
-    handleClickCheckboxItem = (item, index, indexParent) => {
-        const {listItems} = this.state;
-        if(item.isChildren) {
-            item.isComplete = !item.isComplete;
-            !item.isComplete && (listItems[indexParent].isComplete = false);
-            this.setState({listItems});
-        } else {
-            listItems[index].isComplete = !listItems[index].isComplete;
-            listItems[index].children.map( childItem => {
-                childItem.isComplete = !childItem.isComplete;
-            });
-            this.setState({listItems}); // property shorthand
-        }
-    }
-
-    handleClickedButtonDeleteItem = (item, index, indexParent) => {
-        const {listItems} = this.state;
-        item.isChildren ? listItems[indexParent].children.splice(index, 1) : listItems.splice(index, 1);
-        // item.isComplete ? listItems.children.splice(index, 1) : listItems.splice(index, 1);
-        return this.setState({listItems});
-    }
-
     handleClicked = (selected) => {
         this.setState({selected})
-    }
-
-    handleClearComplate = () => {
-        const {listItems} = this.state;
-        const newListItems = listItems.filter( item => item.isComplete === false);
-        this.setState({listItems: newListItems})
     }
 
     handlePagination = (pageNumber) => {
@@ -116,23 +63,6 @@ class App extends Component{
         return str;
     }
 
-    handleClickComplateAll = () => {
-        const {listItems} = this.state;
-        listItems.map(element => element.isComplete = true);
-        this.setState({listItems});
-    }
-
-    handleClickButtonAddChild = (index) => {
-        const {listItems, textContent} = this.state;
-        let pattenDataChildTodo = {
-            title: textContent,
-            isComplete: false,
-            isChildren: true
-        }
-        listItems[index].children.push(pattenDataChildTodo);
-        this.setState({listItems, isHaveChildren: true});
-    }
-
     handleChangeText = (textContent) => {
         this.setState({textContent});
     }
@@ -142,27 +72,30 @@ class App extends Component{
     }
 
     handleSearch = (values) => {
-        const {listItems,searchTextContent} = this.state;
+        const {TodoItems: {listItems}} = this.props;
         let {copyListItems} = this.state;
+        const {TodoActions: {sortTodo}, } = this.props; 
         copyListItems = listItems;
         // convert và filter
-        let testFilter = copyListItems.filter( item => this.change_alias(item.title).includes(this.change_alias(values)));
-        this.setState({copyListItems: testFilter});
+        let itemFilter = copyListItems.filter( item => this.change_alias(item.title).includes(this.change_alias(values)));
+        this.setState({copyListItems: itemFilter});
     }
 
     handleSort = (selected) => {
-        const {listItems} = this.state;
-        debugger;
+        debugger
         if(parseInt(selected) === 1) {
-            listItems.sort((a, b) => {
-                const titleA = this.change_alias(a.title);
-                const titleB = this.change_alias(b.title);
-                if(titleA < titleB) return -1;
-                if(titleA > titleB) return 1;
-                return 0;
-            });
+            // debugger
+            // copyListItems.sort((a, b) => {
+            //     const titleA = this.change_alias(a.title);
+            //     const titleB = this.change_alias(b.title);
+            //     if(titleA < titleB) return -1;
+            //     if(titleA > titleB) return 1;
+            //     return 0;
+            // });
+            this.setState({enableSort: true});
+        } else {
+            this.setState({enableSort: false});
         }
-        this.setState({listItems});
     }
     // redux
     handleAddTodo = (text) => {
@@ -170,15 +103,28 @@ class App extends Component{
         addTodo(text);
     }
 
+    handleToggleTodo = () => {
+        const {TodoActions: {toggleTodo}} = this.props;
+        toggleTodo();
+    }
+
+    hanldeClearComplete = () => {
+        const {TodoActions: {clearComplete}} = this.props;
+        clearComplete();
+    }
+
+
     render() {
         // listItems
-        const {TodoItems: {listItems}, TodoActions: {deleteTodo}} = this.props;
-        const {copyListItems, selected, searchTextContent, pageNumberState} = this.state;
+        // const {TodoItems: {listItems}, TodoActions: {deleteTodo}} = this.props;
+        const {TodoItems, TodoActions: {deleteTodo}} = this.props;
+        const listItems = TodoItems.listItems;
+        const {copyListItems, selected, searchTextContent, pageNumberState, selectFiltersOption, enableSort} = this.state;
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
         if(!listItems) return;
         let limitPage = ~~(listItems.length / 4);
         console.log('Props from app: ',this.props);
-        
+        debugger
         return (
             <div className="App" style={{width: '900px', margin: 'auto'}}>
                 <Header
@@ -188,74 +134,20 @@ class App extends Component{
                     handleSaveTextInputSearch = {this.handleSaveTextInputSearch}
                     handleSearch = {this.handleSearch}
                     handleAddTodo = {this.handleAddTodo}
+                    handleToggleTodo = {this.handleToggleTodo}
                 />
-                {
-                    !searchTextContent ? (listItems && listItems.map((item, index) => {
-                        let flag = false;
-                        if(selected === 'active' && !item.isComplete) flag = true;
-                        if(selected === 'complate' && item.isComplete) flag = true;
-                        if(selected === 'all') flag = true;
-                        if(flag && startElements <= index && endElements > index) {
-                            return (
-                                <div>
-                                    <Item item={item}
-                                          key={index}
-                                          onItemClickedCheckbox={this.handleClickCheckboxItem}
-                                          index={index}
-                                          onItemClickedButtonDelete={this.handleClickedButtonDeleteItem}
-                                          onClickButtonAddChild={this.handleClickButtonAddChild}
-                                          handleDeleteTodo = {() => { deleteTodo(item.id)} }
-                                    />
-                                    <div style={{marginLeft: '60px'}}>
-                                        {item.children && item.children.map( (element, indexChild) => {
-                                            return (<Item item={element}
-                                                          key={index}
-                                                          onItemClickedCheckbox={this.handleClickCheckboxItem}
-                                                          index={indexChild}
-                                                          indexParent ={index}
-                                                          onItemClickedButtonDelete={this.handleClickedButtonDeleteItem}
-                                                          handleDeleteTodo = {() => { deleteTodo(item.id ,item.children[indexChild].id)} }
-                                            />)
-                                        } )}
-                                    </div>
-                                </div>
-                            )
-                        }
-                        // neu search
-                    })) : (copyListItems.map((item, index) => {
-                        let flag = false;
-                        if(selected === 'active' && !item.isComplete) flag = true;
-                        if(selected === 'complate' && item.isComplete) flag = true;
-                        if(selected === 'all') flag = true;
-                        if(flag) {
-                            return (
-                                <div>
-                                    <Item item={item}
-                                          key={index}
-                                          onItemClickedCheckbox={this.handleClickCheckboxItem}
-                                          index={index}
-                                          onItemClickedButtonDelete={this.handleClickedButtonDeleteItem}
-                                          onClickButtonAddChild={this.handleClickButtonAddChild}
-                                    />
-                                    <div style={{marginLeft: '60px'}}>
-                                        {item.children && item.children.map( (element, indexChild) => {
-                                            return (<Item item={element}
-                                                          key={index}
-                                                          onItemClickedCheckbox={this.handleClickCheckboxItem}
-                                                          index={indexChild}
-                                                          indexParent ={index}
-                                                          onItemClickedButtonDelete={this.handleClickedButtonDeleteItem}
-                                            />)
-                                        } )}
-                                    </div>
-                                </div>
-                            )
-                        }
-                    }))
-                }
-
+                <TodosSection
+                    searchTextContent = {searchTextContent}
+                    // TodoItems = {TodoItems}
+                    selected = {selected}
+                    pageNumberState={pageNumberState}
+                    deleteTodo={deleteTodo}
+                    copyListItems={copyListItems}
+                    enableSort={enableSort}
+                />
                 <Footer handleClicked={this.handleClicked}
-                        handleClearComplate={this.handleClearComplate}
+                        // handleClearComplate={this.handleClearComplate}
+                        hanldeClearComplete = {this.hanldeClearComplete}
                         handlePagination = {this.handlePagination}
                         pageNumber = {pageNumberState}
                         limitPage = {limitPage}
@@ -266,7 +158,8 @@ class App extends Component{
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+    debugger
     return {
         TodoItems: state.TodoReducer
     }

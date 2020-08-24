@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './index.css';
 export default class Item extends Component {
     constructor(props) {
+        debugger;
         super(props);
         this.clickedCheckbox = this.clickedCheckbox.bind(this);
     }
@@ -20,7 +21,7 @@ export default class Item extends Component {
         handleDeleteTodo();
     }
     render() {
-        const { item, index, onClickButtonAddChild } = this.props;
+    const { item, id, index, idParent, handleComplete, onClickButtonAddChild, handleAddChild } = this.props;
         const checkedItem = item.isComplete ? true : false;
         return(
             <div className= {`item-${index} ${item.isComplete ? 'isComplate':''} itemTodo`} >
@@ -29,7 +30,8 @@ export default class Item extends Component {
                       <input type="checkbox"
                              className={'inputCheckbox'}
                              checked={checkedItem}
-                             onClick={this.clickedCheckbox}
+                            //  onClick={this.clickedCheckbox}
+                            onClick={() => handleComplete(id, idParent)}
                       />
                   </div>
                       <div className="col-md-6">
@@ -40,7 +42,8 @@ export default class Item extends Component {
                           {
                               !item.isChildren && <button
                                   className={'add-chid btn btn-outline-success'}
-                                  onClick={() => onClickButtonAddChild(index)}
+                                //   onClick={() => onClickButtonAddChild(index)}
+                                onClick={() => handleAddChild(id)}
                               >Add child</button>
                           }
                           <button

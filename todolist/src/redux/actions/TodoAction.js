@@ -3,9 +3,10 @@ import { ADD_TODO,
     ADD_TODO_CHILD,
     COMPLETE_TODO,
     TOGGLE_TODO,
-    STATUS_FILTER_BUTTON, 
-    DELETE_CHILD_TODO} from '../actions/ActionTypes'
-
+    STATUS_FILTER_BUTTON,
+    SORT_TODO,
+    CLEAR_COMPLETE} from '../actions/ActionTypes'
+// reducer se goi den day
 const addTodo = text => {
     return {
         type: ADD_TODO,
@@ -21,21 +22,17 @@ const deleteTodo = (id, idChild) => {
     }
 };
 
-const deleteChildTodo = (id, idParent) => {
-    return {
-        type: DELETE_CHILD_TODO,
-        id,
-        idParent
-    }
-}
-const completeTodo = id => {
+const completeTodo = (id, idParent) => {
+    debugger;
     return {
         type: COMPLETE_TODO,
-        id
+        id,
+        idParent
     }
 };
 
 const addChildTodo = (text, idParent) => {
+    debugger;
     return {
         type: ADD_TODO_CHILD,
         text,
@@ -55,11 +52,34 @@ const statusFilterButton = () => {
     }
 }
 
+const sortTodo = (listItems) => {
+    const lis = listItems;
+    debugger
+    return {
+        type: SORT_TODO,
+        listItems
+    }
+}
+const clearComplete = () => {
+    return {
+        type: CLEAR_COMPLETE,
+    }
+}
+// const saveTextInput = (text) => {
+//     return {
+//         type: SAVE_TEXT_INPUT,
+//         text
+//     }
+// }
+
 export {
     addTodo, 
     deleteTodo,
     completeTodo,
     addChildTodo,
     toggleTodo,
-    statusFilterButton
+    statusFilterButton,
+    sortTodo,
+    clearComplete
+    // saveTextInput
 }

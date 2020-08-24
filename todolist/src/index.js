@@ -6,6 +6,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import RootReducer from './redux/reducers/RootReducer';
+import v from 'redux-devtools'
 
 const store = createStore(RootReducer);
 
