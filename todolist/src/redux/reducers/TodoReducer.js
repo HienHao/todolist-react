@@ -111,6 +111,7 @@ export default function TodoReducer(state = initialState, action) {
                 isChildren: true
             }
             state.listItems[indexParent].children.push(newItem);
+            debugger
             return {...state};
         case SORT_TODO:
             let sta = state;

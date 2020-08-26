@@ -1,0 +1,100 @@
+{
+  "listItems": [
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:40:03.939Z",
+      "_id": "5f44962617ed5e2399c7e832",
+      "title": "Joy",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4496b56ea3202498c53dcc",
+      "title": "Coding",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4496c46ea3202498c53dcd",
+      "title": "Sleep",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4496ca6ea3202498c53dce",
+      "title": "Eat",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4496d56ea3202498c53dcf",
+      "title": "Play sport",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4496d96ea3202498c53dd0",
+      "title": "Play game",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4496e26ea3202498c53dd1",
+      "title": "Swimming",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4496e96ea3202498c53dd2",
+      "title": "Read book",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4496f36ea3202498c53dd3",
+      "title": "Listen to music",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f44970a6ea3202498c53dd4",
+      "title": "Writing",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f44972a6ea3202498c53dd5",
+      "title": "Wash",
+      "__v": 0
+    },
+    {
+      "isComplete": false,
+      "children": [],
+      "created_at": "2020-08-25T04:41:30.264Z",
+      "_id": "5f4497426ea3202498c53dd6",
+      "title": "Working",
+      "__v": 0
+    }
+  ]
+}

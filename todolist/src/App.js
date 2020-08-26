@@ -34,8 +34,9 @@ class App extends Component{
     }
 
     handlePagination = (pageNumber) => {
-        let {pageNumberState, listItems} = this.state;
-        let limitPage = ~~(listItems.length / 4);
+        const {TodoItems: {listItems}} =  this.props;
+        const {pageNumberState} = this.state;
+        const limitPage = ~~(listItems.length / 4);
         if(pageNumberState >= 1 && pageNumberState <= limitPage) {
             if(pageNumber === 0 && pageNumberState < limitPage) {
                 pageNumberState = pageNumberState + 1;
@@ -84,14 +85,6 @@ class App extends Component{
     handleSort = (selected) => {
         debugger
         if(parseInt(selected) === 1) {
-            // debugger
-            // copyListItems.sort((a, b) => {
-            //     const titleA = this.change_alias(a.title);
-            //     const titleB = this.change_alias(b.title);
-            //     if(titleA < titleB) return -1;
-            //     if(titleA > titleB) return 1;
-            //     return 0;
-            // });
             this.setState({enableSort: true});
         } else {
             this.setState({enableSort: false});
@@ -117,9 +110,10 @@ class App extends Component{
     render() {
         // listItems
         // const {TodoItems: {listItems}, TodoActions: {deleteTodo}} = this.props;
+        
         const {TodoItems, TodoActions: {deleteTodo}} = this.props;
         const listItems = TodoItems.listItems;
-        const {copyListItems, selected, searchTextContent, pageNumberState, selectFiltersOption, enableSort} = this.state;
+        const {copyListItems, selected, searchTextContent, pageNumberState, textContent, enableSort} = this.state;
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
         if(!listItems) return;
         let limitPage = ~~(listItems.length / 4);
@@ -144,6 +138,7 @@ class App extends Component{
                     deleteTodo={deleteTodo}
                     copyListItems={copyListItems}
                     enableSort={enableSort}
+                    textContent={textContent}
                 />
                 <Footer handleClicked={this.handleClicked}
                         // handleClearComplate={this.handleClearComplate}
@@ -152,13 +147,14 @@ class App extends Component{
                         pageNumber = {pageNumberState}
                         limitPage = {limitPage}
                         handleSort = {this.handleSort}
+                        
                 />
             </div>
         );
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     debugger
     return {
         TodoItems: state.TodoReducer

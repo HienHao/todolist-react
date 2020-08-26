@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './index.css';
+import Footer from '../../pages/footer';
 export default class Item extends Component {
     constructor(props) {
         debugger;
@@ -59,3 +60,22 @@ export default class Item extends Component {
     }
 }
 
+// function sum(list) {
+//     let sum = 0;
+//     for(let x of list)
+//         sum+=x;
+//     return sum;
+// }
+
+// function sumAbsolute(list) {
+//     for(let i =0; i < list.length; i++){
+//         list[i] = -list[i];
+//     }
+//     return sum(list);
+// }
+
+// let asList = [-5, -3, -2];
+
+// console.log(sumAbsolute([...asList]));
+// console.log(asList);
+// console.log(sum(asList));

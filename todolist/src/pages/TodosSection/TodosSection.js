@@ -3,6 +3,7 @@ import Item from '../../components/toDo/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect'
+import axios from 'axios';
 
 import * as TodoAction from '../../redux/actions/TodoAction';
 import TodoReducer from '../../redux/reducers/TodoReducer';
@@ -13,11 +14,20 @@ class TodosSection extends Component {
         this.state = {
         }
     }
+    componentDidMount() {
+        axios({
+            method: "GET",
+            url: `http://localhost:5005/user`,
+        })
+        .then( req => console.log(req))
+        .catch( error => console.log(error));
+    }
 
     handleAddChild = (idParent) => {
-        const {TodoActions: {addChildTodo}} = this.props;
-        const {textContent} = this.state;
+        const {TodoActions: {addChildTodo}, textContent} = this.props;
+        // const {textContent} = this.state;
         addChildTodo(textContent, idParent);
+        debugger
     }
 
     handleComplete = (id, idParent) => {
