@@ -11,12 +11,10 @@ import {GET_TODOS_REQUEST} from './../../redux/actions/ActionTypes'
 class TodosSection extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        }
     }
     
     componentDidMount() {
-        const { TodoActions: {getTodo} ,listItems} = this.props;
+        const {TodoActions: {getTodo}, listItems} = this.props;
         // debugger;
         getTodo();
     }
@@ -36,7 +34,7 @@ class TodosSection extends Component {
         const {searchTextContent, selected, pageNumberState, copyListItems ,listItems, TodoActions: { _deleteTodo}} = this.props;
         // debugger
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
-        if(!listItems) return null;
+        if (!listItems) return null;
         const _listItem = !searchTextContent ? listItems : copyListItems;
         return(
             <div>
@@ -59,15 +57,15 @@ class TodosSection extends Component {
                                           _deleteTodo = {_deleteTodo}
                                     />
                                     <div style={{marginLeft: '60px'}}>
-                                        {item.children && item.children.map( (element, indexChild) => {
+                                        {item.children && item.children.map((element, indexChild) => {
                                             return (<Item item={element}
                                                           key={index}
-                                                          handleDelete = {this.handleDelete }
-                                                          handleComplete = {this.handleComplete}
+                                                          handleDelete={this.handleDelete }
+                                                          handleComplete={this.handleComplete}
                                                           id={element._id}
                                                           idParent={item._id}
-                                                          _deleteTodo = {_deleteTodo}
-                                            />)
+                                                          _deleteTodo={_deleteTodo}
+                                            />);
                                         } )}
                                     </div>
                                 </div>

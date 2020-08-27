@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as TodoAction from './redux/actions/TodoAction';
-
+// cOMPONENT
 import Header from '../src/pages/inputData/InputData';
 import Item from '../src/components/toDo/index';
 import Footer from "./pages/footer";
 import TodosSection from './pages/TodosSection/TodosSection';
 
+// ACTION
+import * as TodoAction from './redux/actions/TodoAction';
 class App extends Component{
     constructor(props) {
         super(props);
@@ -30,7 +31,7 @@ class App extends Component{
     // }
 
     handleClicked = (selected) => {
-        this.setState({selected})
+        this.setState({selected});
     }
 
     handlePagination = (pageNumber) => {
@@ -78,12 +79,12 @@ class App extends Component{
         const {TodoActions: {sortTodo}} = this.props; 
         copyListItems = listItems;
         // convert và filter
-        let itemFilter = copyListItems.filter( item => this.change_alias(item.title).includes(this.change_alias(values)));
+        let itemFilter = copyListItems.filter((item) => this.change_alias(item.title).includes(this.change_alias(values)));
         this.setState({copyListItems: itemFilter});
     }
 
     handleSort = (selected) => {
-        debugger
+        debugger;
         if(parseInt(selected) === 1) {
             this.setState({enableSort: true});
         } else {
@@ -93,9 +94,9 @@ class App extends Component{
     // redux
     handleAddTodo = (text) => {
         const {TodoActions: { postTodo}} = this.props;
-        debugger
+        debugger;
         postTodo(text);
-        debugger
+        debugger;
         // addTodo(text);
     }
 
@@ -112,13 +113,12 @@ class App extends Component{
     handleDeleteTodo = (id, idParent) => {
         const {TodoActions: {_deleteTodo}} = this.props;
         _deleteTodo();
-        debugger
+        debugger;
     }
 
     render() {
         // listItems
         // const {TodoItems: {listItems}, TodoActions: {deleteTodo}} = this.props;
-        
         const {TodoItems, TodoActions: {postTodo}} = this.props;
         // debugger
         const listItems = TodoItems.listItems;
@@ -132,17 +132,17 @@ class App extends Component{
                 <Header
                     // addItem={this.handleAddItem}
                     handleClickComplateAll={this.handleClickComplateAll}
-                    handleChangeText ={this.handleChangeText}
-                    handleSaveTextInputSearch = {this.handleSaveTextInputSearch}
-                    handleSearch = {this.handleSearch}
-                    handleAddTodo = {this.handleAddTodo}
-                    handleToggleTodo = {this.handleToggleTodo}
-                    postTodo = {postTodo}
+                    handleChangeText={this.handleChangeText}
+                    handleSaveTextInputSearch={this.handleSaveTextInputSearch}
+                    handleSearch={this.handleSearch}
+                    handleAddTodo={this.handleAddTodo}
+                    handleToggleTodo={this.handleToggleTodo}
+                    postTodo={postTodo}
                 />
                 <TodosSection
-                    searchTextContent = {searchTextContent}
+                    searchTextContent={searchTextContent}
                     // TodoItems = {TodoItems}
-                    selected = {selected}
+                    selected={selected}
                     pageNumberState={pageNumberState}
                     // deleteTodo={this.handleDeleteTodo()}
                     copyListItems={copyListItems}
@@ -151,12 +151,11 @@ class App extends Component{
                 />
                 <Footer handleClicked={this.handleClicked}
                         // handleClearComplate={this.handleClearComplate}
-                        hanldeClearComplete = {this.hanldeClearComplete}
-                        handlePagination = {this.handlePagination}
-                        pageNumber = {pageNumberState}
-                        limitPage = {limitPage}
-                        handleSort = {this.handleSort}
-                        
+                        hanldeClearComplete={this.hanldeClearComplete}
+                        handlePagination={this.handlePagination}
+                        pageNumber={pageNumberState}
+                        limitPage={limitPage}
+                        handleSort={this.handleSort}    
                 />
             </div>
         );
@@ -165,15 +164,14 @@ class App extends Component{
 
 function mapStateToProps(state) {
     return {
-        TodoItems: state.TodoReducer
-    }
+        TodoItems: state.TodoReducer,
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         TodoActions: bindActionCreators(TodoAction, dispatch),
-
-    }
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
