@@ -32,7 +32,6 @@ class InputData extends Component {
         this.props.handleSearch(value);
     }
 
-
     render() {
         const {handleClickComplateAll, handleToggleTodo} = this.props;
         return(

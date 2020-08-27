@@ -85,9 +85,12 @@ const putTodo = () => {
     }
 }
 
-const _deleteTodo = () => {
+const _deleteTodo = (id, idParent) => {
+    debugger;
     return {
-        type: ActionTypes.DELETE_TODO_REQUEST
+        type: ActionTypes.DELETE_TODO_REQUEST,
+        id,
+        idParent,
     }
 }
 

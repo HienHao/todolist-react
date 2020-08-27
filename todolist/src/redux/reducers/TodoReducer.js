@@ -117,7 +117,7 @@ export default function TodoReducer(state = initialState, action) {
             return {...state};
         case ActionTypes.POST_TODO_SUCCESS:
             state.listItems.push(action.response.data);
-            return {...state};
+            return Object.assign({}, state);
         case ActionTypes.POST_TODO_FAILRE:
             debugger
             return {};

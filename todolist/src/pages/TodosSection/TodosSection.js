@@ -33,13 +33,15 @@ class TodosSection extends Component {
     }
 
     render() {
-        const {searchTextContent, selected, pageNumberState, deleteTodo, copyListItems ,listItems} = this.props;
+        const {searchTextContent, selected, pageNumberState, copyListItems ,listItems, TodoActions: { _deleteTodo}} = this.props;
+        // debugger
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
         if(!listItems) return null;
+        const _listItem = !searchTextContent ? listItems : copyListItems;
         return(
             <div>
                 {
-                    !searchTextContent ? (listItems && listItems.map((item, index) => {
+                    _listItem.map((item, index) => {
                         let flag = false;
                         if(selected === 'active' && !item.isComplete) flag = true;
                         if(selected === 'complate' && item.isComplete) flag = true;
@@ -51,55 +53,27 @@ class TodosSection extends Component {
                                           key={index}
                                           handleComplete = {this.handleComplete}
                                           index={index}
-                                          handleDeleteTodo = {deleteTodo }
+                                          handleDelete = {() => this.handleDelete()}
                                           handleAddChild = {this.handleAddChild}
-                                          id = {item.id}
+                                          id = {item._id}
+                                          _deleteTodo = {_deleteTodo}
                                     />
                                     <div style={{marginLeft: '60px'}}>
                                         {item.children && item.children.map( (element, indexChild) => {
                                             return (<Item item={element}
                                                           key={index}
-                                                          handleDeleteTodo = {deleteTodo }
+                                                          handleDelete = {this.handleDelete }
                                                           handleComplete = {this.handleComplete}
-                                                          id={element.id}
-                                                          idParent={item.id}
+                                                          id={element._id}
+                                                          idParent={item._id}
+                                                          _deleteTodo = {_deleteTodo}
                                             />)
                                         } )}
                                     </div>
                                 </div>
                             )
                         }
-                        // neu search
-                    })) : (copyListItems.map((item, index) => {
-                        let flag = false;
-                        if(selected === 'active' && !item.isComplete) flag = true;
-                        if(selected === 'complate' && item.isComplete) flag = true;
-                        if(selected === 'all') flag = true;
-                        if(flag) {
-                            return (
-                                <div>
-                                   <Item item={item}
-                                          key={index}
-                                          handleComplete = {this.handleComplete}
-                                          handleDeleteTodo = {deleteTodo}
-                                          handleAddChild = {this.handleAddChild}
-                                          id = {item.id}
-                                    />
-                                    <div style={{marginLeft: '60px'}}>
-                                        {item.children && item.children.map( (element, indexChild) => {
-                                            return (<Item item={element}
-                                                          key={index}
-                                                          handleDeleteTodo = {deleteTodo }
-                                                          handleComplete = {this.handleComplete}
-                                                          id={element.id}
-                                                          idParent={item.id}
-                                            />)
-                                        } )}
-                                    </div>
-                                </div>
-                            )
-                        }
-                    }))
+                    })
                 }
             </div>
         )

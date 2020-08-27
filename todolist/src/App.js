@@ -75,7 +75,7 @@ class App extends Component{
     handleSearch = (values) => {
         const {TodoItems: {listItems}} = this.props;
         let {copyListItems} = this.state;
-        const {TodoActions: {sortTodo}, } = this.props; 
+        const {TodoActions: {sortTodo}} = this.props; 
         copyListItems = listItems;
         // convert và filter
         let itemFilter = copyListItems.filter( item => this.change_alias(item.title).includes(this.change_alias(values)));
@@ -92,7 +92,7 @@ class App extends Component{
     }
     // redux
     handleAddTodo = (text) => {
-        const {TodoActions: {addTodo, postTodo}} = this.props;
+        const {TodoActions: { postTodo}} = this.props;
         debugger
         postTodo(text);
         debugger
@@ -110,8 +110,9 @@ class App extends Component{
     }
 
     handleDeleteTodo = (id, idParent) => {
-        const {TodoActions: {deleteTodo}} = this.props;
-        deleteTodo(id, idParent);
+        const {TodoActions: {_deleteTodo}} = this.props;
+        _deleteTodo();
+        debugger
     }
 
     render() {
@@ -143,7 +144,7 @@ class App extends Component{
                     // TodoItems = {TodoItems}
                     selected = {selected}
                     pageNumberState={pageNumberState}
-                    deleteTodo={this.handleDeleteTodo}
+                    // deleteTodo={this.handleDeleteTodo()}
                     copyListItems={copyListItems}
                     enableSort={enableSort}
                     textContent={textContent}

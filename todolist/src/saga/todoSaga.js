@@ -9,7 +9,6 @@ export function* getTodoWatcher() {
     // console.log('worker: ', getTodoWorker().next());
     while(true) {
         yield take(ActionTypes.GET_TODOS_REQUEST);
-        debugger;
         yield fork(getTodoWorker)
     }
 }
@@ -20,13 +19,15 @@ export function* postTodoWatcher() {
 }
 
 export function* deleteTodoWatcher() {
-    const result = yield take(ActionTypes.DELETE_TODO);
+    debugger
+    const result = yield take(ActionTypes.DELETE_TODO_REQUEST);
     debugger
     yield fork(deleteTodoWorker, result);
+    debugger
 }
 //khai báo đường dẫn đến api
 function getTodo() {
-    debugger
+    // debugger
     return axios.get('http://localhost:5005/user');
 }
 
@@ -41,6 +42,7 @@ function postTodo(title) {
 }
 
 function _deleteTodo(id) {
+    debugger
     return axios({
         method: 'DELETE',
         url: 'http://localhost:5005/user?id='+id,
@@ -61,7 +63,6 @@ function* getTodoWorker() {
 }
 
 function* postTodoWorker(data) {
-    // debugger
     try {
         const response = yield call(() => postTodo(data.data));
         yield put({type: ActionTypes.POST_TODO_SUCCESS, response});
@@ -72,8 +73,9 @@ function* postTodoWorker(data) {
 function* deleteTodoWorker(data) {
     debugger
     try{
+        debugger
         const response = yield call(() => _deleteTodo(data));
-        // yield put({type: ActionTypes.DELETE_TODO_SUCCESS, });
+        yield put({type: ActionTypes.DELETE_TODO_SUCCESS, response});
         debugger
     } catch {
 

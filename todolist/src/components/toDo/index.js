@@ -18,12 +18,15 @@ export default class Item extends Component {
 
     // redux
     handleDeleteTodo = () => {
-        const {handleDeleteTodo, id, idParent} = this.props;
-        handleDeleteTodo(id, idParent);
+        const {handleDelete, id, idParent, _deleteTodo} = this.props;
+        // handleDelete(id, idParent);
+        // debugger
+        debugger;
+        _deleteTodo(id, idParent);
         debugger
     }
     render() {
-    const { item, id, index, idParent, handleComplete, onClickButtonAddChild, handleAddChild } = this.props;
+    const { item, id, index, idParent, handleComplete, onClickButtonAddChild, handleAddChild, handleDeleteTodo } = this.props;
         const checkedItem = item.isComplete ? true : false;
         return(
             <div className= {`item-${index} ${item.isComplete ? 'isComplate':''} itemTodo`} >
@@ -60,23 +63,3 @@ export default class Item extends Component {
         );
     }
 }
-
-// function sum(list) {
-//     let sum = 0;
-//     for(let x of list)
-//         sum+=x;
-//     return sum;
-// }
-
-// function sumAbsolute(list) {
-//     for(let i =0; i < list.length; i++){
-//         list[i] = -list[i];
-//     }
-//     return sum(list);
-// }
-
-// let asList = [-5, -3, -2];
-
-// console.log(sumAbsolute([...asList]));
-// console.log(asList);
-// console.log(sum(asList));
