@@ -1,22 +1,16 @@
-import { ADD_TODO,
-    DELETE_TODO,
-    ADD_TODO_CHILD,
-    COMPLETE_TODO,
-    TOGGLE_TODO,
-    STATUS_FILTER_BUTTON,
-    SORT_TODO,
-    CLEAR_COMPLETE} from '../actions/ActionTypes'
+import * as ActionTypes from '../actions/ActionTypes'
 // reducer se goi den day
 const addTodo = text => {
     return {
-        type: ADD_TODO,
+        type: ActionTypes.ADD_TODO,
         text
     }
 };
 
 const deleteTodo = (id, idChild) => {
+    debugger
     return {
-        type: DELETE_TODO,
+        type: ActionTypes.DELETE_TODO,
         id,
         idChild
     }
@@ -25,7 +19,7 @@ const deleteTodo = (id, idChild) => {
 const completeTodo = (id, idParent) => {
     debugger;
     return {
-        type: COMPLETE_TODO,
+        type: ActionTypes.COMPLETE_TODO,
         id,
         idParent
     }
@@ -34,7 +28,7 @@ const completeTodo = (id, idParent) => {
 const addChildTodo = (text, idParent) => {
     debugger;
     return {
-        type: ADD_TODO_CHILD,
+        type: ActionTypes.ADD_TODO_CHILD,
         text,
         idParent
     }
@@ -42,13 +36,13 @@ const addChildTodo = (text, idParent) => {
 
 const toggleTodo = () => {
     return {
-        type: TOGGLE_TODO
+        type: ActionTypes.TOGGLE_TODO
     }
 }
 
 const statusFilterButton = () => {
     return {
-        type: STATUS_FILTER_BUTTON  
+        type: ActionTypes.STATUS_FILTER_BUTTON  
     }
 }
 
@@ -56,13 +50,13 @@ const sortTodo = (listItems) => {
     const lis = listItems;
     debugger
     return {
-        type: SORT_TODO,
+        type: ActionTypes.SORT_TODO,
         listItems
     }
 }
 const clearComplete = () => {
     return {
-        type: CLEAR_COMPLETE,
+        type: ActionTypes.CLEAR_COMPLETE,
     }
 }
 // const saveTextInput = (text) => {
@@ -71,6 +65,31 @@ const clearComplete = () => {
 //         text
 //     }
 // }
+const getTodo = () => {
+    return {
+        type: ActionTypes.GET_TODOS_REQUEST
+    }
+}
+
+const postTodo = (data) => {
+    
+    return {
+        type: ActionTypes.POST_TODO_REQUEST,
+        data
+    }
+}
+
+const putTodo = () => {
+    return {
+        type: ActionTypes.PUT_TODO_REQUEST
+    }
+}
+
+const _deleteTodo = () => {
+    return {
+        type: ActionTypes.DELETE_TODO_REQUEST
+    }
+}
 
 export {
     addTodo, 
@@ -80,6 +99,10 @@ export {
     toggleTodo,
     statusFilterButton,
     sortTodo,
-    clearComplete
+    clearComplete,
+    getTodo,
+    postTodo,
+    _deleteTodo,
+    putTodo
     // saveTextInput
 }

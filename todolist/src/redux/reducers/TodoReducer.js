@@ -1,48 +1,44 @@
 import { v4 as uuidv4 } from 'uuid';
-import { ADD_TODO,DELETE_TODO,ADD_TODO_CHILD,COMPLETE_TODO,TOGGLE_TODO, STATUS_FILTER_BUTTON, SORT_TODO, CLEAR_COMPLETE } from '../actions/ActionTypes';
+import * as ActionTypes from '../actions/ActionTypes';
 // container se map action va reducer
 const initialState = {
     listItems: [
-        {
-            id: 1,
-            title: 'Ăn cơm',
-            isComplete: false,
-            children: [
-                {id: uuidv4(),title: 'Ăn cháo', isComplete: false, isChildren: true},
-                {id: uuidv4(),title: 'Ăn cá', isComplete: false, isChildren: true},
-                {id: uuidv4(),title: 'Ăn tôm', isComplete: false, isChildren: true},
-            ],
-            isHaveChildren: true,
-        },
-        {id: 2, title: 'Ăn cá', isComplete: false, children: [], isHaveChildren: false},
-        {id: 3, title: 'Ăn canh', isComplete: false, children: [], isHaveChildren: false },
-        {id: 4, title: 'uống nước', isComplete: false, children: [], isHaveChildren: false},
-        {id: 5, title: 'giặt', isComplete: false, children: [], isHaveChildren: false},
-        {id: 6, title: 'tắm', isComplete: false, children: [], isHaveChildren: false},
-        {id: 7, title: 'Nấu cơm', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'giặt', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'tắm', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'Nấu cơm', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'đi làm', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'deadline', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'ngồi', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'nghỉ ngơi', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'Ăn cơm trưa', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'Ăn sáng', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'Ăn tối', isComplete: false, children: [], isHaveChildren: false},
-        {id: 0, title: 'đi học', isComplete: false, children: [], isHaveChildren: false}
+        // {
+        //     id: 1,
+        //     title: 'Ăn cơm',
+        //     isComplete: false,
+        //     children: [
+        //         {id: uuidv4(),title: 'Ăn cháo', isComplete: false, isChildren: true},
+        //         {id: uuidv4(),title: 'Ăn cá', isComplete: false, isChildren: true},
+        //         {id: uuidv4(),title: 'Ăn tôm', isComplete: false, isChildren: true},
+        //     ],
+        //     isHaveChildren: true,
+        // },
+        // {id: 2, title: 'Ăn cá', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 3, title: 'Ăn canh', isComplete: false, children: [], isHaveChildren: false },
+        // {id: 4, title: 'uống nước', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 5, title: 'giặt', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 6, title: 'tắm', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 7, title: 'Nấu cơm', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'giặt', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'tắm', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'Nấu cơm', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'đi làm', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'deadline', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'ngồi', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'nghỉ ngơi', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'Ăn cơm trưa', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'Ăn sáng', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'Ăn tối', isComplete: false, children: [], isHaveChildren: false},
+        // {id: 0, title: 'đi học', isComplete: false, children: [], isHaveChildren: false}
     ],
-    inputHeader: {
-        inputSearch: '',
-        inputAddTodo: ''
-    },
-    statusFilter: 'all'
+    fetching: false,
+    error: false
 };
 
 export default function TodoReducer(state = initialState, action) {
     switch(action.type) {
-        case ADD_TODO:
-            debugger
+        case ActionTypes.ADD_TODO:
             console.log('ADD TODO');
             const todo = {
                 title: action.text,
@@ -52,8 +48,7 @@ export default function TodoReducer(state = initialState, action) {
             }
             state.listItems.push(todo);
             return Object.assign({}, state);
-        case DELETE_TODO:
-            debugger
+        case ActionTypes.DELETE_TODO:
             console.log('DELETE_TODO, id: ', action.id, action.idChild);
             if(action.idChild) {
                 const indexParent = state.listItems.findIndex(itemParent => itemParent.id === action.id);
@@ -65,8 +60,7 @@ export default function TodoReducer(state = initialState, action) {
             }
             
             return {...state};
-        case COMPLETE_TODO:
-            debugger
+        case ActionTypes.COMPLETE_TODO:
             console.log('COMPLETE_TODO');
             if(!action.idParent) { // complete parent
                 const index = state.listItems.findIndex(item => item.id === action.id);
@@ -88,20 +82,17 @@ export default function TodoReducer(state = initialState, action) {
                 
             }
             return {...state};
-        case TOGGLE_TODO:
-            debugger
+        case ActionTypes.TOGGLE_TODO:
             console.log('TOGGLE_TODO');
             state.listItems.map(item => {
                 item.isComplete = true;
                 item.children.length > 0 && item.children.map(itemChild => itemChild.isComplete = true);
             });
             return {...state};
-        case STATUS_FILTER_BUTTON:
-            debugger
+        case ActionTypes.STATUS_FILTER_BUTTON:
             console.log('STATUS_FILTER_BUTTON');
             return state;
-        case ADD_TODO_CHILD:
-            debugger
+        case ActionTypes.ADD_TODO_CHILD:
             console.log('ADD_TODO_CHILD, id = ', action.idParent);
             const indexParent = state.listItems.findIndex(itemParent => itemParent.id === action.idParent);
             const newItem = {
@@ -111,19 +102,29 @@ export default function TodoReducer(state = initialState, action) {
                 isChildren: true
             }
             state.listItems[indexParent].children.push(newItem);
-            debugger
             return {...state};
-        case SORT_TODO:
-            let sta = state;
-            debugger;
+        case ActionTypes.SORT_TODO:
             return {...state};
-        case CLEAR_COMPLETE:
-            debugger
+        case ActionTypes.CLEAR_COMPLETE:
             const newListItems = state.listItems.filter(item => item.isComplete === false);
             state.listItems = newListItems;
             return {...state};
-        default:
+        case ActionTypes.GET_TODOS_SUCCES:
+            state.listItems = action.todos;            
+            return {...state};
+        case ActionTypes.GET_TODOS_FAILRE:
+            state.listItems = {};
+            return {...state};
+        case ActionTypes.POST_TODO_SUCCESS:
+            state.listItems.push(action.response.data);
+            return {...state};
+        case ActionTypes.POST_TODO_FAILRE:
             debugger
+            return {};
+        case ActionTypes.DELETE_TODO_SUCCESS:
+            debugger
+            return {...state};
+        default:
             return state;
     }
 } 

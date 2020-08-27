@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './index.css';
 import Footer from '../../pages/footer';
+import { deleteTodo } from '../../redux/actions/TodoAction';
 export default class Item extends Component {
     constructor(props) {
-        debugger;
         super(props);
         this.clickedCheckbox = this.clickedCheckbox.bind(this);
     }
@@ -18,8 +18,9 @@ export default class Item extends Component {
 
     // redux
     handleDeleteTodo = () => {
-        const {handleDeleteTodo} = this.props;
-        handleDeleteTodo();
+        const {handleDeleteTodo, id, idParent} = this.props;
+        handleDeleteTodo(id, idParent);
+        debugger
     }
     render() {
     const { item, id, index, idParent, handleComplete, onClickButtonAddChild, handleAddChild } = this.props;

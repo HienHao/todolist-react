@@ -4,11 +4,19 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import App from './App';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import RootReducer from './redux/reducers/RootReducer';
-import v from 'redux-devtools'
+import createSagaMiddleware from 'redux-saga';
+import rootSagas from './saga/rootSaga';
 
-const store = createStore(RootReducer);
+// khoi tao middleware
+const sagaMiddleware = createSagaMiddleware();
+
+// them middleware saga
+const store = createStore(RootReducer, applyMiddleware(sagaMiddleware));
+
+//chay root saga
+sagaMiddleware.run(rootSagas);
 
 const root = (
   <Provider store={store}>

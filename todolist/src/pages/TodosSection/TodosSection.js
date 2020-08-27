@@ -7,27 +7,24 @@ import axios from 'axios';
 
 import * as TodoAction from '../../redux/actions/TodoAction';
 import TodoReducer from '../../redux/reducers/TodoReducer';
-
+import {GET_TODOS_REQUEST} from './../../redux/actions/ActionTypes'
 class TodosSection extends Component {
     constructor(props) {
         super(props);
         this.state = {
         }
     }
+    
     componentDidMount() {
-        axios({
-            method: "GET",
-            url: `http://localhost:5005/user`,
-        })
-        .then( req => console.log(req))
-        .catch( error => console.log(error));
+        const { TodoActions: {getTodo} ,listItems} = this.props;
+        // debugger;
+        getTodo();
     }
 
     handleAddChild = (idParent) => {
         const {TodoActions: {addChildTodo}, textContent} = this.props;
         // const {textContent} = this.state;
         addChildTodo(textContent, idParent);
-        debugger
     }
 
     handleComplete = (id, idParent) => {
@@ -37,9 +34,6 @@ class TodosSection extends Component {
 
     render() {
         const {searchTextContent, selected, pageNumberState, deleteTodo, copyListItems ,listItems} = this.props;
-        debugger;
-        const a = this.props;
-        debugger
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
         if(!listItems) return null;
         return(
@@ -57,7 +51,7 @@ class TodosSection extends Component {
                                           key={index}
                                           handleComplete = {this.handleComplete}
                                           index={index}
-                                          handleDeleteTodo = {() => { deleteTodo(item.id)} }
+                                          handleDeleteTodo = {deleteTodo }
                                           handleAddChild = {this.handleAddChild}
                                           id = {item.id}
                                     />
@@ -65,7 +59,7 @@ class TodosSection extends Component {
                                         {item.children && item.children.map( (element, indexChild) => {
                                             return (<Item item={element}
                                                           key={index}
-                                                          handleDeleteTodo = {() => { deleteTodo(item.id ,item.children[indexChild].id)} }
+                                                          handleDeleteTodo = {deleteTodo }
                                                           handleComplete = {this.handleComplete}
                                                           id={element.id}
                                                           idParent={item.id}
@@ -87,7 +81,7 @@ class TodosSection extends Component {
                                    <Item item={item}
                                           key={index}
                                           handleComplete = {this.handleComplete}
-                                          handleDeleteTodo = {() => { deleteTodo(item.id)} }
+                                          handleDeleteTodo = {deleteTodo}
                                           handleAddChild = {this.handleAddChild}
                                           id = {item.id}
                                     />
@@ -95,7 +89,7 @@ class TodosSection extends Component {
                                         {item.children && item.children.map( (element, indexChild) => {
                                             return (<Item item={element}
                                                           key={index}
-                                                          handleDeleteTodo = {() => { deleteTodo(item.id ,item.children[indexChild].id)} }
+                                                          handleDeleteTodo = {deleteTodo }
                                                           handleComplete = {this.handleComplete}
                                                           id={element.id}
                                                           idParent={item.id}
@@ -146,7 +140,6 @@ const getSort = createSelector(
 function mapStateToProps(state, ownProps) {
     const {enableSort} = ownProps;
     
-    debugger;
     return {
         // TodoItems: !enableSort ? state.TodoReducer : getSort(state),
         listItems: !enableSort ? state.TodoReducer.listItems : getSort(state),
@@ -155,7 +148,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        TodoActions: bindActionCreators(TodoAction, dispatch)
+        TodoActions: bindActionCreators(TodoAction, dispatch),
+        // getTodo: () => dispatch(getTodo())
     }
 }
 

@@ -20,7 +20,7 @@ class InputData extends Component {
     handleKeyDown = event => {
         const {contentInput} = this.state;
         if(event.key === 'Enter') {
-            this.props.addItem(contentInput);
+            // this.props.addItem(contentInput);
             this.props.handleAddTodo(contentInput);
         }
     }
@@ -35,7 +35,6 @@ class InputData extends Component {
 
     render() {
         const {handleClickComplateAll, handleToggleTodo} = this.props;
-        // console.log('Render: ', this.state.contentInputSearch);
         return(
             <header className={'header'} >
                 <h1>todos</h1>

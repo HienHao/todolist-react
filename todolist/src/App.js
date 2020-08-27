@@ -22,12 +22,12 @@ class App extends Component{
             enableSort: false
         }
     }
-
-    handleAddItem = (item) => {
-        const {listItems} = this.state;
-        listItems.push({title: item, isComplete: false});
-        this.setState({listItems});
-    }
+    
+    // handleAddItem = (item) => {
+    //     const {listItems} = this.state;
+    //     listItems.push({title: item, isComplete: false});
+    //     this.setState({listItems});
+    // }
 
     handleClicked = (selected) => {
         this.setState({selected})
@@ -92,8 +92,11 @@ class App extends Component{
     }
     // redux
     handleAddTodo = (text) => {
-        const {TodoActions: {addTodo}} = this.props;
-        addTodo(text);
+        const {TodoActions: {addTodo, postTodo}} = this.props;
+        debugger
+        postTodo(text);
+        debugger
+        // addTodo(text);
     }
 
     handleToggleTodo = () => {
@@ -106,36 +109,41 @@ class App extends Component{
         clearComplete();
     }
 
+    handleDeleteTodo = (id, idParent) => {
+        const {TodoActions: {deleteTodo}} = this.props;
+        deleteTodo(id, idParent);
+    }
 
     render() {
         // listItems
         // const {TodoItems: {listItems}, TodoActions: {deleteTodo}} = this.props;
         
-        const {TodoItems, TodoActions: {deleteTodo}} = this.props;
+        const {TodoItems, TodoActions: {postTodo}} = this.props;
+        // debugger
         const listItems = TodoItems.listItems;
         const {copyListItems, selected, searchTextContent, pageNumberState, textContent, enableSort} = this.state;
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
         if(!listItems) return;
         let limitPage = ~~(listItems.length / 4);
-        console.log('Props from app: ',this.props);
-        debugger
+        // console.log('Props from app: ',this.props);
         return (
             <div className="App" style={{width: '900px', margin: 'auto'}}>
                 <Header
-                    addItem={this.handleAddItem}
+                    // addItem={this.handleAddItem}
                     handleClickComplateAll={this.handleClickComplateAll}
                     handleChangeText ={this.handleChangeText}
                     handleSaveTextInputSearch = {this.handleSaveTextInputSearch}
                     handleSearch = {this.handleSearch}
                     handleAddTodo = {this.handleAddTodo}
                     handleToggleTodo = {this.handleToggleTodo}
+                    postTodo = {postTodo}
                 />
                 <TodosSection
                     searchTextContent = {searchTextContent}
                     // TodoItems = {TodoItems}
                     selected = {selected}
                     pageNumberState={pageNumberState}
-                    deleteTodo={deleteTodo}
+                    deleteTodo={this.handleDeleteTodo}
                     copyListItems={copyListItems}
                     enableSort={enableSort}
                     textContent={textContent}
@@ -155,7 +163,6 @@ class App extends Component{
 }
 
 function mapStateToProps(state) {
-    debugger
     return {
         TodoItems: state.TodoReducer
     }
@@ -163,7 +170,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        TodoActions: bindActionCreators(TodoAction, dispatch)
+        TodoActions: bindActionCreators(TodoAction, dispatch),
+
     }
 }
 
