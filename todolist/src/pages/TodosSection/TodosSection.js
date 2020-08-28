@@ -3,43 +3,41 @@ import Item from '../../components/toDo/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect'
-import axios from 'axios';
 
 import * as TodoAction from '../../redux/actions/TodoAction';
-import TodoReducer from '../../redux/reducers/TodoReducer';
-import {GET_TODOS_REQUEST} from './../../redux/actions/ActionTypes'
 class TodosSection extends Component {
     constructor(props) {
         super(props);
     }
     
     componentDidMount() {
-        const {TodoActions: {getTodo}, listItems} = this.props;
-        // debugger;
+        const {TodosSectionActions: {getTodo}, listItems} = this.props;
+        debugger;
         getTodo();
     }
 
     handleAddChild = (idParent) => {
-        const {TodoActions: {addChildTodo}, textContent} = this.props;
+        const {TodosSectionActions: {addChildTodo}, textContent} = this.props;
         // const {textContent} = this.state;
         addChildTodo(textContent, idParent);
     }
 
     handleComplete = (id, idParent) => {
-        const {TodoActions: {completeTodo}} = this.props;
+        const {TodosSectionActions: {completeTodo}} = this.props;
         completeTodo(id ,idParent);
     }
 
     render() {
-        const {searchTextContent, selected, pageNumberState, copyListItems ,listItems, TodoActions: { _deleteTodo}} = this.props;
-        // debugger
+        const {searchTextContent, selected, pageNumberState, copyListItems ,listItems, TodosSectionActions, textContent} = this.props;
+        debugger
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
-        if (!listItems) return null;
         const _listItem = !searchTextContent ? listItems : copyListItems;
+        debugger;
+        if(!_listItem) return null;
         return(
             <div>
                 {
-                    _listItem.map((item, index) => {
+                    Object.keys(_listItem).length !== 0 && _listItem.map((item, index) => {
                         let flag = false;
                         if(selected === 'active' && !item.isComplete) flag = true;
                         if(selected === 'complate' && item.isComplete) flag = true;
@@ -49,12 +47,14 @@ class TodosSection extends Component {
                                 <div>
                                     <Item item={item}
                                           key={index}
-                                          handleComplete = {this.handleComplete}
+                                          handleComplete={this.handleComplete}
                                           index={index}
-                                          handleDelete = {() => this.handleDelete()}
-                                          handleAddChild = {this.handleAddChild}
-                                          id = {item._id}
-                                          _deleteTodo = {_deleteTodo}
+                                          handleDelete={() => this.handleDelete()}
+                                          handleAddChild={this.handleAddChild}
+                                          id={item._id}
+                                          _deleteTodo={TodosSectionActions._deleteTodo}
+                                          handleAddChild={TodosSectionActions.addChildTodo}
+                                          textContent={textContent}
                                     />
                                     <div style={{marginLeft: '60px'}}>
                                         {item.children && item.children.map((element, indexChild) => {
@@ -64,7 +64,7 @@ class TodosSection extends Component {
                                                           handleComplete={this.handleComplete}
                                                           id={element._id}
                                                           idParent={item._id}
-                                                          _deleteTodo={_deleteTodo}
+                                                          _deleteTodo={TodosSectionActions._deleteTodo}
                                             />);
                                         } )}
                                     </div>
@@ -111,16 +111,20 @@ const getSort = createSelector(
 
 function mapStateToProps(state, ownProps) {
     const {enableSort} = ownProps;
-    
+    // debugger;
+    const listItems = !enableSort ? state.TodoReducer.listItems : getSort(state);
+    // debugger;
+    // const listItems = state.TodoReducer.listItems;
+    // debugger;
     return {
         // TodoItems: !enableSort ? state.TodoReducer : getSort(state),
-        listItems: !enableSort ? state.TodoReducer.listItems : getSort(state),
+        listItems
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        TodoActions: bindActionCreators(TodoAction, dispatch),
+        TodosSectionActions: bindActionCreators(TodoAction, dispatch),
         // getTodo: () => dispatch(getTodo())
     }
 }

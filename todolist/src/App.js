@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 
 // cOMPONENT
 import Header from '../src/pages/inputData/InputData';
-import Item from '../src/components/toDo/index';
 import Footer from "./pages/footer";
 import TodosSection from './pages/TodosSection/TodosSection';
 
@@ -49,6 +48,7 @@ class App extends Component{
             }
         }
     }
+
     change_alias = (alias) => {
         let str = alias;
         str = str.toLowerCase();
@@ -110,12 +110,6 @@ class App extends Component{
         clearComplete();
     }
 
-    handleDeleteTodo = (id, idParent) => {
-        const {TodoActions: {_deleteTodo}} = this.props;
-        _deleteTodo();
-        debugger;
-    }
-
     render() {
         // listItems
         // const {TodoItems: {listItems}, TodoActions: {deleteTodo}} = this.props;
@@ -126,6 +120,7 @@ class App extends Component{
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
         if(!listItems) return;
         let limitPage = ~~(listItems.length / 4);
+        // debugger
         // console.log('Props from app: ',this.props);
         return (
             <div className="App" style={{width: '900px', margin: 'auto'}}>
@@ -141,10 +136,8 @@ class App extends Component{
                 />
                 <TodosSection
                     searchTextContent={searchTextContent}
-                    // TodoItems = {TodoItems}
                     selected={selected}
                     pageNumberState={pageNumberState}
-                    // deleteTodo={this.handleDeleteTodo()}
                     copyListItems={copyListItems}
                     enableSort={enableSort}
                     textContent={textContent}

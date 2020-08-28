@@ -14,44 +14,75 @@ export function* getTodoWatcher() {
 }
 
 export function* postTodoWatcher() {
-    const result = yield take(ActionTypes.POST_TODO_REQUEST);
-    yield fork(postTodoWorker, result); // truyen doi so trong side effect
+    while(true) {
+        const result = yield take(ActionTypes.POST_TODO_REQUEST);
+        yield fork(postTodoWorker, result); // truyen doi so trong side effect
+    }
 }
 
 export function* deleteTodoWatcher() {
-    debugger
-    const result = yield take(ActionTypes.DELETE_TODO_REQUEST);
-    debugger
-    yield fork(deleteTodoWorker, result);
-    debugger
+    while(true) {
+        const result = yield take(ActionTypes.DELETE_TODO_REQUEST);
+        yield fork(deleteTodoWorker, result);
+    }
+}
+
+export function* addChildTodoWatcher() {
+    while(true) {
+        const result = yield take(ActionTypes.ADD_TODO_CHILD);
+        yield fork(addChildTodoWorker, result);
+    }
 }
 //khai báo đường dẫn đến api
 function getTodo() {
-    // debugger
+    debugger
     return axios.get('http://localhost:5005/user');
 }
 
 function postTodo(title) {
+    debugger;
     return axios({
         method: 'POST',
         url: 'http://localhost:5005/user',
         data: {
             title
         }
-    })
+    });
 }
 
-function _deleteTodo(id) {
+function _deleteTodo(id, idParent) {
+    if(id && idParent) {
+        debugger;
+        return axios({
+            method: 'DELETE',
+            url: 'http://localhost:5005/user/'+idParent,
+            data: {
+                idChild: id,
+            }
+        })
+    } else {
+        debugger;
+        return axios({
+            method: 'DELETE',
+            url: 'http://localhost:5005/user/'+id,
+        }); 
+    }    
+}
+
+function addChildTodo(text ,idParent) {
     debugger
     return axios({
-        method: 'DELETE',
-        url: 'http://localhost:5005/user?id='+id,
-    })
+        method: 'POST',
+        url: 'http://localhost:5005/user/'+idParent,
+        data: {
+            title: text
+        },
+    });
 }
 
 // gọi đếm api và trả về action de worker chuyen huong sang reducers
 function* getTodoWorker() {
-
+    debugger;
     try{
         // khong tra ve du lieu va khong chay xuong'??? ==> do call()
         const _response = yield call(() => getTodo());
@@ -65,19 +96,37 @@ function* getTodoWorker() {
 function* postTodoWorker(data) {
     try {
         const response = yield call(() => postTodo(data.data));
+        debugger;
         yield put({type: ActionTypes.POST_TODO_SUCCESS, response});
     } catch(error) {
         yield put({type: ActionTypes.POST_TODO_FAILRE, error});
     }
 }
-function* deleteTodoWorker(data) {
-    debugger
-    try{
-        debugger
-        const response = yield call(() => _deleteTodo(data));
-        yield put({type: ActionTypes.DELETE_TODO_SUCCESS, response});
-        debugger
-    } catch {
 
+function* deleteTodoWorker(data) {
+    debugger;
+    try{
+        if(data.id && data.idParent) {
+            debugger;
+            yield call(() => _deleteTodo(data.id, data.idParent));
+            yield put({type: ActionTypes.DELETE_TODO_SUCCESS, data});
+            debugger;
+        } else {
+            debugger;
+            yield call(() => _deleteTodo(data.id));
+            yield put({type: ActionTypes.DELETE_TODO_SUCCESS, data});
+            debugger;
+        }
+    } catch(error){
+        yield put({type: ActionTypes.DELETE_TODO_FAILRE});
+    }
+}
+
+function* addChildTodoWorker(data) {
+    try{
+        yield call(() => addChildTodo(data.text, data.idParent));
+        yield put({type: ActionTypes.ADD_TODO_CHILD_SUCCESS, data});
+    } catch(error) {
+        // yield put({type: ActionTypes., error});
     }
 }

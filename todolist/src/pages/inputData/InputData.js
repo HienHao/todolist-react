@@ -20,7 +20,6 @@ class InputData extends Component {
     handleKeyDown = event => {
         const {contentInput} = this.state;
         if(event.key === 'Enter') {
-            // this.props.addItem(contentInput);
             this.props.handleAddTodo(contentInput);
         }
     }
@@ -33,17 +32,14 @@ class InputData extends Component {
     }
 
     render() {
-        const {handleClickComplateAll, handleToggleTodo} = this.props;
+        const {handleToggleTodo} = this.props;
         return(
             <header className={'header'} >
                 <h1>todos</h1>
-                {/* <App test={'test'} />*/}
                 <div className={'newInputData'} style={{display: 'flex', justifyContent: 'space-between'}}>
                     <button className={'complateAll'} 
-                    // onClick={handleClickComplateAll}
                     onClick={() => handleToggleTodo()}
                     >complete all</button>
-
                     <input className={'filter-todos'}
                            type={'text'} style={{width: '200px', fontSize: '30px'}}
                            placeholder={'Search here...'}

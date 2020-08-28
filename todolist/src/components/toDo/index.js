@@ -1,32 +1,38 @@
 import React, {Component} from 'react';
+
 import './index.css';
-import Footer from '../../pages/footer';
-import { deleteTodo } from '../../redux/actions/TodoAction';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as TodoAction from '../../redux/actions/TodoAction';
 export default class Item extends Component {
     constructor(props) {
         super(props);
         this.clickedCheckbox = this.clickedCheckbox.bind(this);
     }
     clickedCheckbox() {
-        const {item, index, indexParent} = this.props;
-        this.props.onItemClickedCheckbox(item,index, indexParent);
+        const {item, index, indexParent, onItemClickedCheckbox} = this.props;
+        onItemClickedCheckbox(item,index, indexParent);
     }
     clickedButtonDeleteItem = () => {
-        const {item, index, indexParent} = this.props;
-        this.props.onItemClickedButtonDelete(item, index, indexParent);
+        const {item, index, indexParent, onItemClickedButtonDelete} = this.props;
+        onItemClickedButtonDelete(item, index, indexParent);
     }
 
     // redux
     handleDeleteTodo = () => {
-        const {handleDelete, id, idParent, _deleteTodo} = this.props;
-        // handleDelete(id, idParent);
-        // debugger
+        const {id, idParent, _deleteTodo} = this.props;
         debugger;
         _deleteTodo(id, idParent);
-        debugger
     }
+
+    handleAddChild = () => {
+        const {id, handleAddChild, textContent} = this.props;
+        handleAddChild(textContent, id);
+    }
+
     render() {
-    const { item, id, index, idParent, handleComplete, onClickButtonAddChild, handleAddChild, handleDeleteTodo } = this.props;
+    const { item, id, index, idParent, handleComplete } = this.props;
         const checkedItem = item.isComplete ? true : false;
         return(
             <div className= {`item-${index} ${item.isComplete ? 'isComplate':''} itemTodo`} >
@@ -48,7 +54,8 @@ export default class Item extends Component {
                               !item.isChildren && <button
                                   className={'add-chid btn btn-outline-success'}
                                 //   onClick={() => onClickButtonAddChild(index)}
-                                onClick={() => handleAddChild(id)}
+                                // onClick={() => handleAddChild(id)}
+                                onClick={this.handleAddChild}
                               >Add child</button>
                           }
                           <button
