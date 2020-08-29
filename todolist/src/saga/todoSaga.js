@@ -1,4 +1,4 @@
-import {  call, put, take, takeLatest, fork } from 'redux-saga/effects';
+import {  call, put, take, takeLatest, fork, retry } from 'redux-saga/effects';
 import axios from 'axios';
 
 import * as ActionTypes from './../redux/actions/ActionTypes';
@@ -31,6 +31,14 @@ export function* addChildTodoWatcher() {
     while(true) {
         const result = yield take(ActionTypes.ADD_TODO_CHILD);
         yield fork(addChildTodoWorker, result);
+    }
+}
+
+export function* toggleTodoWatcher() {
+    while(true) {
+        const result = yield take(ActionTypes.TOGGLE_TODO);
+        debugger;
+        yield fork(toggleTodoWorker, result);
     }
 }
 //khai báo đường dẫn đến api
@@ -74,10 +82,24 @@ function addChildTodo(text ,idParent) {
     return axios({
         method: 'POST',
         url: 'http://localhost:5005/user/'+idParent,
-        data: {
-            title: text
-        },
+        data: {title: text},
     });
+}
+
+function toggleTodo(id, idParent, item) {
+    if(id && idParent) {
+        return axios({
+            method: 'PUT',
+            url: 'http://localhost:5005/user?id='+idParent,
+            data: {item}
+        });
+    } else {
+        return axios({
+            method: 'PUT',
+            url: 'http://localhost:5005/user?id='+id,
+            data: {item}
+        });
+    }
 }
 
 // gọi đếm api và trả về action de worker chuyen huong sang reducers
@@ -87,6 +109,7 @@ function* getTodoWorker() {
         // khong tra ve du lieu va khong chay xuong'??? ==> do call()
         const _response = yield call(() => getTodo());
         const todos = _response.data;
+        // console.log('data todo: ', todos);
         yield put({type: ActionTypes.GET_TODOS_SUCCES, todos});
      } catch(error) {
         yield put({ type: ActionTypes.GET_TODOS_FAILRE, error });
@@ -107,15 +130,11 @@ function* deleteTodoWorker(data) {
     debugger;
     try{
         if(data.id && data.idParent) {
-            debugger;
-            yield call(() => _deleteTodo(data.id, data.idParent));
+            const response = yield call(() => _deleteTodo(data.id, data.idParent));
             yield put({type: ActionTypes.DELETE_TODO_SUCCESS, data});
-            debugger;
         } else {
-            debugger;
-            yield call(() => _deleteTodo(data.id));
+            const response = yield call(() => _deleteTodo(data.id));
             yield put({type: ActionTypes.DELETE_TODO_SUCCESS, data});
-            debugger;
         }
     } catch(error){
         yield put({type: ActionTypes.DELETE_TODO_FAILRE});
@@ -128,5 +147,29 @@ function* addChildTodoWorker(data) {
         yield put({type: ActionTypes.ADD_TODO_CHILD_SUCCESS, data});
     } catch(error) {
         // yield put({type: ActionTypes., error});
+    }
+}
+
+function* toggleTodoWorker(data) {
+    try {
+        const {id, idParent, item} = data;
+        if (id && idParent) {
+            yield call(() => toggleTodo(id, idParent, item));
+            yield put({type: ActionTypes.TOGGLE_TODO_SUCCESS, data});
+        } else {
+            yield call(() => toggleTodo(id, item));
+            yield put({type: ActionTypes.TOGGLE_TODO_SUCCESS, data});
+        }
+        
+    } catch(error) {
+
+    }
+}
+
+function* toggleAllWorker(data) {
+    try {
+
+    } catch(error) {
+
     }
 }

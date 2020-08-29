@@ -5,7 +5,7 @@ import './index.css';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as TodoAction from '../../redux/actions/TodoAction';
-export default class Item extends Component {
+class Item extends Component {
     constructor(props) {
         super(props);
         this.clickedCheckbox = this.clickedCheckbox.bind(this);
@@ -32,7 +32,7 @@ export default class Item extends Component {
     }
 
     render() {
-    const { item, id, index, idParent, handleComplete } = this.props;
+    const { item, id, index, idParent, handleComplete, ItemActions } = this.props;
         const checkedItem = item.isComplete ? true : false;
         return(
             <div className= {`item-${index} ${item.isComplete ? 'isComplate':''} itemTodo`} >
@@ -42,7 +42,8 @@ export default class Item extends Component {
                              className={'inputCheckbox'}
                              checked={checkedItem}
                             //  onClick={this.clickedCheckbox}
-                            onClick={() => handleComplete(id, idParent)}
+                            // onClick={() => handleComplete(id, idParent)}
+                            onClick={() => ItemActions.toggleTodo(id, idParent, item)}
                       />
                   </div>
                       <div className="col-md-6">
@@ -70,3 +71,11 @@ export default class Item extends Component {
         );
     }
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ItemActions: bindActionCreators(TodoAction, dispatch),
+    }
+}
+
+export default connect(this, mapDispatchToProps)(Item);

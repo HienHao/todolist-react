@@ -62,7 +62,6 @@ export default function TodoReducer(state = initialState, action) {
             return {...state};
         case ActionTypes.COMPLETE_TODO:
             console.log('COMPLETE_TODO');
-            debugger;
             // if(!action.idParent) { // complete parent
             //     const index = state.listItems.findIndex(item => item.id === action.id);
             //     state.listItems[index].isComplete = !state.listItems[index].isComplete;
@@ -110,24 +109,19 @@ export default function TodoReducer(state = initialState, action) {
             const newListItems = state.listItems.filter(item => item.isComplete === false);
             state.listItems = newListItems;
             return {...state};
+        /**
+         * case redux-saga
+         */
         case ActionTypes.GET_TODOS_SUCCES:
-            state.listItems = action.todos;            
+            state.listItems = action.todos;  
+            console.log('lít item: ', state.listItems, 'action todo: ', action.todos);          
             return {...state};
         case ActionTypes.GET_TODOS_FAILRE:
             state.listItems = {};
             return {...state};
         case ActionTypes.POST_TODO_SUCCESS:
             const {listItems} = state;
-            // debugger
-            // state.listItems.push(action.response.data);
-
-            // return Object.assign({}, state);
-            // debugger;
-            // state.listItems.push(action.response.data);
-            // const newState = {...state};
             listItems.push(action.response.data)
-            // console.log(newState === state);
-            // console.log(state === state);
             debugger;
             const newState = {listItems: [...listItems]};
             debugger;
@@ -136,36 +130,37 @@ export default function TodoReducer(state = initialState, action) {
             debugger
             return {};
         case ActionTypes.DELETE_TODO_SUCCESS:
-            const {id, idParent} = action.data;
-            debugger;
-            // if(id && idParent) {
-            //     const indexParent = newItems.findIndex(itemParent => itemParent.id === idParent);
-            //     const newListItems = newItems[indexParent].children.filter(itemChild => itemChild.id !== id);
-            //     newItems[indexParent].children = newListItems;
-            //     debugger;
-            // } else {
-            //     const newListItems = newItems.filter(todo => todo.id !== id);
-            //     newItems = newListItems;
-            //     debugger;
-            // }
-            const indexParent = state.listItems.findIndex(itemParent => itemParent._id === idParent);
-            const listFilter = state.listItems[indexParent].children.filter(itemChild => itemChild._id !== id);
-            const newListChildren = [...state.listItems[indexParent]];
-            debugger;
-            const newStateItems = {newListChildren: [...listFilter]};
-            debugger;
-            // newListChildren = listFilter;
-            // const newStateItems = {listItems: {children: [...listFilter]}};
-            const asadasd = Object.assign({}, state.listItems[indexParent], listFilter)
-            debugger;
-            return {...asadasd};
+            if (action.data.id && action.data.idParent) {
+                const newListItem = [...state.listItems];
+                const item = newListItem.find((element) => element._id === action.data.idParent);
+                const listChildItem = item.children.filter((element) => {
+                    return element._id !== action.data.id;
+                });
+                item.children = listChildItem;
+                return {
+                    ...state,
+                    listItems: newListItem
+                };
+            } else {
+                const newListItem = [...state.listItems];
+                const list = newListItem.filter((element) => element._id !== action.data.id);                
+                return {
+                    ...state,
+                    listItems: list,
+                }
+            }      
         case ActionTypes.ADD_TODO_CHILD_SUCCESS:
-            // debugger;
-            const {text} = action.data; 
-            // const asas = state.listItems.push({title: text, isComplete: false, isChilrend: true});
-            state.listItems.push({title: text, isComplete: false, isChilrend: true})
-            debugger
-            return Object.assign({}, state);
+            const {text, idParent} = action.data; 
+            const itemParent = state.listItems.find(item => item._id === idParent); 
+            itemParent.children.push({title: text, isComplete: false, isChildren: true});
+            const newList = [...state.listItems];
+            return {
+                ...state,
+                listItems: newList
+            }
+        case ActionTypes.TOGGLE_TODO_SUCCESS:
+            debugger;
+            return {...state};
         default:
             return state;
     }

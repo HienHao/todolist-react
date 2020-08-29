@@ -120,13 +120,11 @@ class App extends Component{
         let startElements = (pageNumberState-1) * 5, endElements = startElements + 5;
         if(!listItems) return;
         let limitPage = ~~(listItems.length / 4);
-        // debugger
-        // console.log('Props from app: ',this.props);
         return (
             <div className="App" style={{width: '900px', margin: 'auto'}}>
                 <Header
                     // addItem={this.handleAddItem}
-                    handleClickComplateAll={this.handleClickComplateAll}
+                    // handleClickComplateAll={this.handleClickComplateAll}
                     handleChangeText={this.handleChangeText}
                     handleSaveTextInputSearch={this.handleSaveTextInputSearch}
                     handleSearch={this.handleSearch}

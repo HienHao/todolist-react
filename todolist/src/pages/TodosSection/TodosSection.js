@@ -57,7 +57,7 @@ class TodosSection extends Component {
                                           textContent={textContent}
                                     />
                                     <div style={{marginLeft: '60px'}}>
-                                        {item.children && item.children.map((element, indexChild) => {
+                                        {item.children && item.children.map((element) => {
                                             return (<Item item={element}
                                                           key={index}
                                                           handleDelete={this.handleDelete }
@@ -111,21 +111,14 @@ const getSort = createSelector(
 
 function mapStateToProps(state, ownProps) {
     const {enableSort} = ownProps;
-    // debugger;
-    const listItems = !enableSort ? state.TodoReducer.listItems : getSort(state);
-    // debugger;
-    // const listItems = state.TodoReducer.listItems;
-    // debugger;
     return {
-        // TodoItems: !enableSort ? state.TodoReducer : getSort(state),
-        listItems
+        listItems: !enableSort ? state.TodoReducer.listItems : getSort(state)
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         TodosSectionActions: bindActionCreators(TodoAction, dispatch),
-        // getTodo: () => dispatch(getTodo())
     }
 }
 
